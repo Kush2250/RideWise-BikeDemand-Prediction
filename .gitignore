@@ -31,7 +31,3 @@ Thumbs.db
 
 # Streamlit specific
 .streamlit/secrets.toml
-
-# Large data files (if needed)
-# *.csv
-*.pkl
