@@ -34,4 +34,4 @@ Thumbs.db
 
 # Large data files (if needed)
 # *.csv
-# *.pkl
+*.pkl
