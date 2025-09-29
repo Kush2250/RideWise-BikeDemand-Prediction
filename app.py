@@ -127,11 +127,14 @@ st.markdown("""
 @st.cache_resource
 def load_model():
     try:
-        import pickle
         import joblib
         # Load model and feature columns from the correct files
-        model = joblib.load('ridewise_model.pkl')
-        x_columns = joblib.load('x_columns.pkl')
+        try:
+            model = joblib.load('models/ridewise_model.pkl')
+            x_columns = joblib.load('models/x_columns.pkl')
+        except FileNotFoundError:
+            st.error("Model files not found. Please run create_model.py first to generate the model files.")
+            st.stop()
         return model, x_columns
     except FileNotFoundError:
         st.error("Model file not found. Please run create_model.py first.")

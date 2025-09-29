@@ -1,38 +1,35 @@
-# RideWise: Bike Rental Prediction System
+# 🚲 RideWise: Bike Rental Prediction System 🚲
 
-A machine learning application that predicts bike rental demand based on weather conditions and temporal factors.
+## 📘 Abstract
+RideWise is a sophisticated bike rental prediction system that leverages machine learning to forecast rental demand based on weather conditions and temporal factors. This intelligent system helps bike rental companies optimize their fleet management and improve service availability.
 
-## Project Overview
+## 🌟 Features
 
-RideWise is a comprehensive bike rental prediction system that uses historical data to forecast the number of bike rentals based on various factors such as weather conditions, time of day, season, and more. The application provides an intuitive user interface for users to input parameters and receive predictions.
+- 📊 **Predictive Analytics**: Uses Random Forest Regression to predict bike rental demand
+- 🖥️ **Interactive UI**: User-friendly interface with sliders and selectors for input parameters
+- 🕒 **Hourly Predictions**: Option to view predicted rentals for all hours of the day
+- 📜 **Prediction History**: Tracks and displays previous predictions
+- 📈 **Data Visualization**: Graphical representation of hourly predictions
 
-## Features
+## 🧰 Technical Stack
 
-- **Predictive Analytics**: Uses Random Forest Regression to predict bike rental demand
-- **Interactive UI**: User-friendly interface with sliders and selectors for input parameters
-- **Hourly Predictions**: Option to view predicted rentals for all hours of the day
-- **Prediction History**: Tracks and displays previous predictions
-- **Data Visualization**: Graphical representation of hourly predictions
+| Technology | Purpose |
+|------------|---------|
+| Python 3.8+ | Core programming language |
+| Pandas & NumPy | Data manipulation and processing |
+| Scikit-learn | Machine learning model implementation |
+| Streamlit | Web application framework |
+| Matplotlib | Data visualization |
+| Joblib | Model serialization |
 
-## Technical Stack
-
-- **Python**: Core programming language
-- **Pandas & NumPy**: Data manipulation and processing
-- **Scikit-learn**: Machine learning model implementation
-- **Streamlit**: Web application framework
-- **Matplotlib**: Data visualization
-- **Joblib**: Model serialization
-
-## Project Structure
+## 🗂️ Project Structure
 
 - `hour.csv`: Raw dataset containing bike rental information
 - `create_model.py`: Script for data preprocessing and model training
 - `app.py`: Streamlit application for user interaction
-- `ridewise_model.pkl`: Serialized trained model
-- `x_columns.pkl`: Feature columns for prediction
 - `Project.ipynb`: Jupyter notebook with initial data exploration
 
-## Data Processing Workflow
+## 🔄 Data Processing Workflow
 
 1. **Data Preprocessing**:
    - Column renaming for better readability
@@ -51,29 +48,23 @@ RideWise is a comprehensive bike rental prediction system that uses historical d
    - Prediction using the trained model
    - Conversion of log predictions back to original scale
 
-## How to Use
+## 🚀 How to Run
 
-1. **Install Dependencies**:
-   ```
-   pip install streamlit pandas numpy scikit-learn matplotlib joblib
-   ```
+```bash
+# 1. Clone the repo
+git clone https://github.com/Kush2250/RideWise-BikeDemand-Prediction.git
+cd RideWise-BikeDemand-Prediction
 
-2. **Run the Application**:
-   ```
-   streamlit run app.py
-   ```
+# 2. Install dependencies
+pip install -r requirements.txt
 
-3. **Input Parameters**:
-   - Adjust sliders for temperature, humidity, and wind speed
-   - Select season, month, hour, and other categorical variables
-   - Click "Predict Rentals" to get results
+# 3. Run the Streamlit app
+streamlit run app.py
+```
 
-4. **View Results**:
-   - See the predicted number of bike rentals
-   - Optionally view hourly predictions
-   - Track prediction history
+Then open your browser and access the application!
 
-## Model Performance
+## 📊 Model Performance
 
 The Random Forest Regressor was chosen for its ability to handle both numerical and categorical features effectively. The model was trained on historical bike rental data with the following preprocessing steps:
 
@@ -81,17 +72,25 @@ The Random Forest Regressor was chosen for its ability to handle both numerical 
 - One-hot encoding of categorical features
 - Feature selection to remove redundant information
 
-## Future Improvements
+## 🔮 Future Improvements
 
 - Integration with real-time weather data
 - Addition of more advanced models for comparison
 - Geographic visualization of rental predictions
 - User authentication and personalized predictions
 
-## License
+## 👨‍💻 Author
+
+**Kushagra Prakash Singhal**
+- 📧 Email: kushagraa756@gmail.com
+
+- 🔗 GitHub: [Kush2250](https://github.com/Kush2250)
+
+## 📝 License
 
 This project is open-source and available for educational and commercial use.
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
-The dataset used in this project is the Bike Sharing Dataset from the UCI Machine Learning Repository.
+- The dataset used in this project is the Bike Sharing Dataset from the UCI Machine Learning Repository
+- Open-source data science ecosystem: pandas, scikit-learn, Streamlit

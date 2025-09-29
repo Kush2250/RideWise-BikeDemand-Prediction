@@ -1,11 +1,15 @@
 import pandas as pd
 import numpy as np
 import joblib
+import os
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 
+# Create models directory if it doesn't exist
+os.makedirs('models', exist_ok=True)
+
 # Load the dataset
-df = pd.read_csv('hour.csv')
+df = pd.read_csv('dataset/hour.csv')
 
 # Rename columns to match the app
 df = df.rename(columns={
@@ -40,9 +44,10 @@ model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, Y_train)
 
 # Save the model and feature columns
-joblib.dump(model, 'ridewise_model.pkl')
-joblib.dump(x_columns, 'x_columns.pkl')
+joblib.dump(model, 'models/ridewise_model.pkl')
+joblib.dump(x_columns, 'models/x_columns.pkl')
 
 print("Model and feature columns saved successfully!")
 print(f"Number of features: {len(x_columns)}")
 print(f"Feature columns: {x_columns[:5]}...")
+print(f"Models saved in the 'models' directory")
