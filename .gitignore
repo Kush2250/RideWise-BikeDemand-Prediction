@@ -34,4 +34,9 @@ Thumbs.db
 
 # Large data files (if needed)
 # *.csv
-*.pkl
+
+# Model files (too large for GitHub)
+models/ridewise_model.pkl
+models/x_columns.pkl
+ridewise_model.pkl
+x_columns.pkl
