@@ -126,22 +126,31 @@ st.markdown("""
 # Load the trained model and feature columns
 @st.cache_resource
 def load_model():
+    import os
+    import joblib
+    
+    # Check if models directory exists
+    if not os.path.exists('models'):
+        os.makedirs('models', exist_ok=True)
+        st.error("Models directory not found. Please run create_model.py first to generate the model files.")
+        st.stop()
+    
+    # Check if model files exist
+    model_path = 'models/ridewise_model.pkl'
+    columns_path = 'models/x_columns.pkl'
+    
+    if not os.path.exists(model_path) or not os.path.exists(columns_path):
+        st.error("Model files not found. Please run create_model.py first to generate the model files.")
+        st.stop()
+    
     try:
-        import joblib
-        # Load model and feature columns from the correct files
-        try:
-            model = joblib.load('models/ridewise_model.pkl')
-            x_columns = joblib.load('models/x_columns.pkl')
-        except FileNotFoundError:
-            st.error("Model files not found. Please run create_model.py first to generate the model files.")
-            st.stop()
+        # Load model and feature columns
+        model = joblib.load(model_path)
+        x_columns = joblib.load(columns_path)
         return model, x_columns
-    except FileNotFoundError:
-        st.error("Model file not found. Please run create_model.py first.")
-        return None, None
     except Exception as e:
         st.error(f"Error loading model: {e}")
-        return None, None
+        st.stop()
 
 model, x_columns = load_model()
 
