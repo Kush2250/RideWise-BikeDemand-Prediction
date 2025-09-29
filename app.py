@@ -123,34 +123,96 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Load the trained model and feature columns
+# Load the trained model and feature columns or create them if not found
 @st.cache_resource
 def load_model():
-    import os
-    import joblib
-    
-    # Check if models directory exists
-    if not os.path.exists('models'):
-        os.makedirs('models', exist_ok=True)
-        st.error("Models directory not found. Please run create_model.py first to generate the model files.")
-        st.stop()
-    
-    # Check if model files exist
-    model_path = 'models/ridewise_model.pkl'
-    columns_path = 'models/x_columns.pkl'
-    
-    if not os.path.exists(model_path) or not os.path.exists(columns_path):
-        st.error("Model files not found. Please run create_model.py first to generate the model files.")
-        st.stop()
-    
     try:
-        # Load model and feature columns
-        model = joblib.load(model_path)
-        x_columns = joblib.load(columns_path)
-        return model, x_columns
+        import pickle
+        import joblib
+        import os
+        
+        # Check if model files exist
+        if os.path.exists('models/ridewise_model.pkl') and os.path.exists('models/x_columns.pkl'):
+            # Load model and feature columns from the models directory
+            model = joblib.load('models/ridewise_model.pkl')
+            x_columns = joblib.load('models/x_columns.pkl')
+            return model, x_columns
+        elif os.path.exists('ridewise_model.pkl') and os.path.exists('x_columns.pkl'):
+            # Load model and feature columns from the root directory
+            model = joblib.load('ridewise_model.pkl')
+            x_columns = joblib.load('x_columns.pkl')
+            return model, x_columns
+        else:
+            # Model files not found, generate them
+            st.info("Model files not found. Generating models now...")
+            return generate_model()
     except Exception as e:
         st.error(f"Error loading model: {e}")
-        st.stop()
+        return None, None
+
+# Function to generate the model if not found
+def generate_model():
+    try:
+        import pandas as pd
+        import numpy as np
+        import joblib
+        import os
+        from sklearn.ensemble import RandomForestRegressor
+        from sklearn.model_selection import train_test_split
+        
+        # Create models directory if it doesn't exist
+        os.makedirs('models', exist_ok=True)
+        
+        # Check if dataset exists in dataset folder or root
+        if os.path.exists('dataset/hour.csv'):
+            df = pd.read_csv('dataset/hour.csv')
+        elif os.path.exists('hour.csv'):
+            df = pd.read_csv('hour.csv')
+        else:
+            st.error("Dataset not found. Please upload hour.csv to the app.")
+            return None, None
+        
+        # Rename columns to match the app
+        df = df.rename(columns={
+            'yr': 'year',
+            'mnth': 'month',
+            'hr': 'hour',
+            'hum': 'humidity',
+            'weathersit': 'weather',
+            'cnt': 'count'
+        })
+        
+        # Apply log transformation to the target variable
+        df['count'] = np.log(df['count'])
+        
+        # Drop unnecessary columns
+        df = df.drop(columns=['instant', 'dteday', 'year', 'atemp', 'casual', 'registered'])
+        
+        # Create dummy variables for categorical features
+        categorical_features = ['season', 'month', 'hour', 'holiday', 'weekday', 'workingday', 'weather']
+        df_encoded = pd.get_dummies(df, columns=categorical_features, drop_first=False)
+        
+        # Split features and target
+        X = df_encoded.drop('count', axis=1)
+        x_columns = X.columns.tolist()
+        Y = df_encoded['count']
+        
+        # Split data into training and testing sets
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+        
+        # Train a RandomForestRegressor model
+        model = RandomForestRegressor(n_estimators=100, random_state=42)
+        model.fit(X_train, Y_train)
+        
+        # Save the model and feature columns
+        joblib.dump(model, 'models/ridewise_model.pkl')
+        joblib.dump(x_columns, 'models/x_columns.pkl')
+        
+        st.success("Model generated successfully!")
+        return model, x_columns
+    except Exception as e:
+        st.error(f"Error generating model: {e}")
+        return None, None
 
 model, x_columns = load_model()
 
